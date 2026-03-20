@@ -1,3 +1,4 @@
+import { storeToRefs } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
 
 import HomePage from './pages/HomePage.vue'
@@ -13,8 +14,8 @@ export const ROUTES = {
 
 const routes = [
   { path: ROUTES.HOME, component: HomePage, meta: { requiresAuth: true } },
-  { path: ROUTES.LOGIN, component: LoginPage, meta: { guestOnly: true } },
-  { path: ROUTES.REGISTER, component: RegisterPage, meta: { guestOnly: true } },
+  { path: ROUTES.LOGIN, component: LoginPage },
+  { path: ROUTES.REGISTER, component: RegisterPage },
 ]
 
 const router = createRouter({
@@ -22,21 +23,18 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to) => {
+router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
-
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    return {
-      path: ROUTES.LOGIN,
-      query: { redirect: to.fullPath },
+  const { isAuthenticated } = storeToRefs(authStore)
+  if (to.meta.requiresAuth === true) {
+    if (isAuthenticated.value === false) {
+      router.push(ROUTES.LOGIN)
+    } else {
+      next()
     }
+  } else {
+    next()
   }
-
-  if (to.meta.guestOnly && authStore.isAuthenticated) {
-    return { path: ROUTES.HOME }
-  }
-
-  return true
 })
 
 export default router

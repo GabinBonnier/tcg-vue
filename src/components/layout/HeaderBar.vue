@@ -27,7 +27,7 @@
       </NSpace>
       <NSpace align="center" :size="16">
         <NText depth="3">{{ authStore.user?.username }}</NText>
-        <NButton size="small" @click="onLogout">Déconnexion</NButton>
+        <NButton size="small" @click="onsignOut">Déconnexion</NButton>
       </NSpace>
     </NSpace>
   </NLayoutHeader>
@@ -43,8 +43,8 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL as string
 const authStore = useAuthStore()
 const router = useRouter()
 
-const onLogout = async () => {
-  authStore.clearAuth()
+const onsignOut = async () => {
+  authStore.signOut()
   await router.push(ROUTES.LOGIN)
 }
 </script>
