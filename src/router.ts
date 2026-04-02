@@ -1,6 +1,8 @@
 import { storeToRefs } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
 
+import CreateDeckPage from './pages/CreateDeckPage.vue'
+import DeckDetailPage from './pages/DeckDetailPage.vue'
 import HomePage from './pages/HomePage.vue'
 import LoginPage from './pages/LoginPage.vue'
 import RegisterPage from './pages/RegisterPage.vue'
@@ -10,12 +12,24 @@ export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
+  CREATE_DECK: '/decks/create',
+  DECK_DETAIL: '/decks/:id',
 } as const
 
 const routes = [
   { path: ROUTES.HOME, component: HomePage, meta: { requiresAuth: true } },
   { path: ROUTES.LOGIN, component: LoginPage },
   { path: ROUTES.REGISTER, component: RegisterPage },
+  {
+    path: ROUTES.CREATE_DECK,
+    component: CreateDeckPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: ROUTES.DECK_DETAIL,
+    component: DeckDetailPage,
+    meta: { requiresAuth: true },
+  },
 ]
 
 const router = createRouter({
